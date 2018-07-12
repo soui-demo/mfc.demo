@@ -12,13 +12,7 @@ using namespace SOUI;
 #define new DEBUG_NEW
 #endif
 
-#ifdef _DEBUG
-#define COM_IMGDECODER  _T("imgdecoder-wicd.dll")
-#define COM_RENDER_GDI  _T("render-gdid.dll")
-#else
-#define COM_IMGDECODER  _T("imgdecoder-wic.dll")
-#define COM_RENDER_GDI  _T("render-gdi.dll")
-#endif
+#include "com-cfg.h"
 
 
 #ifdef _DEBUG
@@ -63,13 +57,13 @@ BOOL CmfcdemoApp::InitInstance()
 
     {//这一个括号很重要，保证里面声明的局部对象在CoUninitialize()之前释放
 
-        SComLoader imgDecLoader;
-        SComLoader renderLoader;
+        SComMgr *pComMgr =new SComMgr;
         CAutoRefPtr<IImgDecoderFactory> pImgDecoderFactory;
         CAutoRefPtr<IRenderFactory> pRenderFactory;
-        imgDecLoader.CreateInstance(COM_IMGDECODER,(IObjRef**)&pImgDecoderFactory);
-        renderLoader.CreateInstance(COM_RENDER_GDI,(IObjRef**)&pRenderFactory);
+		pComMgr->CreateImgDecoder((IObjRef**)&pImgDecoderFactory);
+		pComMgr->CreateRender_GDI((IObjRef**)&pRenderFactory);
 
+		delete pComMgr;
         pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
 
         SApplication *pSouiApp=new SApplication(pRenderFactory,theApp.m_hInstance);

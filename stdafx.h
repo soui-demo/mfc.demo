@@ -20,18 +20,19 @@
 // 关闭 MFC 对某些常见但经常可放心忽略的警告消息的隐藏
 #define _AFX_ALL_WARNINGS
 
+
+#define _WIN32_WINNT 0x0502
 #include <afxwin.h>         // MFC 核心组件和标准组件
 
 #include <Imm.h>
 
 #include "resource.h"	//APP资源
-
 #include <souistd.h>
+
 #include <core/SHostDialog.h>
 #include <control/SMessageBox.h>
 #include <control/souictrls.h>
 #include <control/realwndhandler-i.h>
-#include <com-loader.hpp>
 
 #ifdef _UNICODE
 #if defined _M_IX86
