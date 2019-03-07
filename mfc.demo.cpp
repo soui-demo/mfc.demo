@@ -55,15 +55,14 @@ BOOL CmfcdemoApp::InitInstance()
 	HRESULT hRes = CoInitialize(NULL);
 	SASSERT(SUCCEEDED(hRes));
 
-    {//这一个括号很重要，保证里面声明的局部对象在CoUninitialize()之前释放
+	SComMgr *pComMgr = new SComMgr;
+	{//这一个括号很重要，保证里面声明的局部对象在CoUninitialize()之前释放
 
-        SComMgr *pComMgr =new SComMgr;
         CAutoRefPtr<IImgDecoderFactory> pImgDecoderFactory;
         CAutoRefPtr<IRenderFactory> pRenderFactory;
 		pComMgr->CreateImgDecoder((IObjRef**)&pImgDecoderFactory);
 		pComMgr->CreateRender_GDI((IObjRef**)&pRenderFactory);
 
-		delete pComMgr;
         pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
 
         SApplication *pSouiApp=new SApplication(pRenderFactory,theApp.m_hInstance);
@@ -96,6 +95,7 @@ BOOL CmfcdemoApp::InitInstance()
         delete pSouiApp;
 
     }
+	delete pComMgr;
 
 	CoUninitialize();
 
